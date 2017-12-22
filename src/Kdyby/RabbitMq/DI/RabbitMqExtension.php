@@ -348,8 +348,13 @@ class RabbitMqExtension extends Nette\DI\CompilerExtension
 					->addSetup('setQueues', [$config['queues']]);
 
 			} elseif (empty($config['queues']) && !empty($config['queue'])) {
+				if (!empty($config['perRoutingKey'])) {
+					$consumer->setClass('Kdyby\RabbitMq\RoutingKeyConsumer');
+				} else {
+					$consumer->setClass('Kdyby\RabbitMq\Consumer');
+				}
+
 				$consumer
-					->setClass('Kdyby\RabbitMq\Consumer')
 					->addSetup('setQueueOptions', [$this->mergeConfig($config['queue'], $this->queueDefaults)])
 					->addSetup('setCallback', [self::fixCallback($config['callback'])]);
 
