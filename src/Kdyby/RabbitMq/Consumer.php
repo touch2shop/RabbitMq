@@ -112,6 +112,7 @@ class Consumer extends BaseConsumer
 					$this->getChannel()->wait(NULL, FALSE, $this->getIdleTimeout());
 				} catch (AMQPTimeoutException $e) {
 					$this->onTimeout($this);
+					die("Timeout exception");
 					// nothing bad happened, right?
 					// intentionally not throwing the exception
 				}
